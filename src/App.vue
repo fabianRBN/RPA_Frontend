@@ -79,7 +79,7 @@ export default {
       showSidepanel: false
     }),
   components:{
-    MenuLeft
+    MenuLeft,
   },
    methods: {  
       // Called by child component  
@@ -98,7 +98,7 @@ export default {
 }
 .page-container {
     min-height: 300px;
-    height: 100%;
+    min-height: 100%;
     overflow: hidden;
     position: relative;
     border: 1px solid rgba(#000, .12);
@@ -111,7 +111,7 @@ export default {
 
   .md-content {
     padding: 16px;
-    height: 90%;
+    min-height: 90%;
   }
 
  
