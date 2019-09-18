@@ -8,8 +8,14 @@ import VueAxios from 'vue-axios'
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
+import FileUpload from 'v-file-upload'
 
-Vue.use(VueMaterial,axios,VueAxios)
+import Vuelidate from 'vuelidate'
+import DynamicSelect from 'vue-dynamic-select'
+ 
+
+
+Vue.use(VueMaterial,axios,VueAxios,FileUpload,Vuelidate,DynamicSelect)
 
 new Vue({
   router,

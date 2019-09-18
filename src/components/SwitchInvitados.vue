@@ -1,11 +1,7 @@
 <template>
 
 <div>
-    <md-switch v-model="boolean" @change="cambio" ></md-switch>
-    
-
-
-  
+    <md-switch v-model="boolean" @change="cambio" class="md-primary" >{{(boolean)?'Confirmado':'Pendiente'}}</md-switch>
     <md-dialog-confirm
       :md-active.sync="active"
       md-title="Confirmacion"
@@ -13,8 +9,8 @@
       md-confirm-text="Aceptar"
       md-cancel-text="Cancelar"
       @md-cancel="onCancel"
-      @md-confirm="onConfirm" />
- 
+      @md-clicked-outside="closeModal(boolean)"
+      @md-confirm="onConfirm(boolean)" />
 </div>
 
 
@@ -36,7 +32,8 @@ import { hostname } from 'os';
               boolean: (this.itemInvitado.asistencia=='true')?true:false,
               active: false,
               value: null,
-              invitado: this.itemInvitado
+              invitado: this.itemInvitado,
+              estado:'Pendiente',
       }
     },
   
@@ -44,28 +41,33 @@ import { hostname } from 'os';
       cambio(){
         this.active = true;
       },
-      onConfirm () {
+      onConfirm (data) {
+        var  _this= this;
         axios.post('http://'+hostname()+':3000/updateAsistencia', {
                     cedula: this.invitado.cedula,
                     asistencia: (this.invitado.asistencia=="true")?false:true
                 })
                 .then(function () {
-                    console.log('actualizado')
-                    this.$emit("setParentComponentInvitados");
-
+                  this.$emit("setParentComponentInvitados");
+                  _this.boolean=!data;
                 })
                 .catch(function () {
-                                      console.log('error')
-
+                    _this.boolean= data;
                 });
       },
       onCancel () {
         this.value = 'Disagreed'
+        this.boolean= (this.itemInvitado.asistencia=='true')?true:false;
       },
       getTextMensaje(invitado){
-        return (invitado.asistencia == "true")?"Confirmar asistencia de "+invitado.nombre:"Eliminar asistencia de  "+invitado.nombre;
+        return (invitado.asistencia == "true")?"Eliminar asistencia de "+invitado.nombre:"Confirmar asistencia de  "+invitado.nombre;
+      },
+      closeModal(data){
+        this.boolean = !data;
+
       }
     },
+
 
 
     

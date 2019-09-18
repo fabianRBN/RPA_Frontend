@@ -10,12 +10,12 @@
       <span class="md-list-item-text">Invitados</span>
     </md-list-item>
 
-    <md-list-item @click="callingParentComponentMethod" to="/about">
+    <md-list-item @click="callingParentComponentMethod" to="/">
       <md-icon>person</md-icon>
       <span class="md-list-item-text">Invitado</span>
     </md-list-item>
 
-    <md-list-item @click="callingParentComponentMethod" to="/about">
+    <md-list-item @click="callingParentComponentMethod" to="/configuracion">
       <md-icon>settings</md-icon>
       <span class="md-list-item-text">Configuracion</span>
     </md-list-item>
