@@ -139,7 +139,6 @@ export default {
       axios
         .post("http://"+ hostname() + ":3000/personal/crear", this.form)
         .then(() => {
-          console.log("ok");
           window.setTimeout(() => {
             this.lastUser = `${this.form.nombre} ${this.form.lastName}`;
             this.userSaved = true;

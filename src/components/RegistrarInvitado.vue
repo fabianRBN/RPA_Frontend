@@ -7,7 +7,7 @@
 
       <md-card-content>
         <div class="md-layout md-gutter">
-          <div class="md-layout-item md-small-size-100">
+         <!--  <div class="md-layout-item md-small-size-100">
             <md-field :class="getValidationClass('cedula')">
               <label for="first-name">Cedula</label>
               <md-input
@@ -20,7 +20,7 @@
               <span class="md-error" v-if="!$v.form.cedula.required">El cedula requerida</span>
               <span class="md-error" v-else-if="!$v.form.cedula.minlength">Cedula no valida</span>
             </md-field>
-          </div>
+          </div> -->
 
           <div class="md-layout-item md-small-size-100">
             <md-field :class="getValidationClass('correo')">
@@ -124,8 +124,7 @@
                 v-model="seleccionado"
                 name="personal"
                 id="personal"
-                :placeholder="form.personal"
-              >
+                :placeholder="form.personal">
                 <md-option
                   v-for="item in personal"
                   :key="item.cedula"
@@ -137,7 +136,26 @@
         </div>
 
         <div class="md-layout md-gutter">
-          <div class="md-layout-item md-small-size-100">
+
+           <div class="md-layout-item md-small-size-100">
+         
+              <md-field>
+                    <label for="personal">Descuento</label>
+                    <md-select
+                      v-model="descuento"
+                      name="descuento"
+                      id="descuento"
+                      :placeholder="form.descuento">
+                      <md-option value="0">0%</md-option>
+                      <md-option value="20">20%</md-option>
+                      <md-option value="40">40%</md-option>
+                      <md-option value="100">100%</md-option>
+                    </md-select>
+                  </md-field>
+              
+          </div>
+
+          <!-- <div class="md-layout-item md-small-size-100">
      
               <label for="first-name">Descuento de: {{descuento}} %</label>
               
@@ -149,7 +167,7 @@
                 value="35" min="0" max="100" autocomplete="off"
               />
         
-          </div>
+          </div> -->
          <!--  <div class="md-layout-item md-small-size-100">
            <md-field >
               <label for="first-name">Precio Final : {{descuento}} %</label>
@@ -188,14 +206,15 @@ export default {
   data: function() {
     return {
       form: {
-        cedula: null,
+        cedula: '',
         nombre: null,
         apellido: null,
         movil: null,
         empresa: null,
         cargo: null,
         correo: null,
-        personal: null
+        personal: null,
+        descuento: null
       },
       userSaved: false,
       sending: false,
@@ -203,7 +222,7 @@ export default {
       textButton: this.accion ? "Editar" : "Crear",
       personal: [],
       seleccionado: "",
-      descuento:0
+      descuento:''
     };
   },
   validations: {
@@ -262,6 +281,7 @@ export default {
       this.form.cargo = null;
       this.form.movil = null;
       this.form.personal = null;
+      this.form.descuento = null;
     },
     getPersonal() {
       axios
@@ -274,6 +294,8 @@ export default {
         });
     },
     saveUser() {
+      this.form.personal = this.seleccionado;
+      this.form.descuento = this.descuento;
       this.sending = true;
       axios
         .post("http://" + hostname() + ":3000/createInvitado", this.form)
@@ -283,7 +305,7 @@ export default {
             this.lastUser = `${this.form.nombre} ${this.form.lastName}`;
             this.userSaved = true;
             this.sending = false;
-            this.clearForm();
+           /*  this.clearForm(); */
           }, 500);
         })
         .catch(error => {
@@ -293,7 +315,9 @@ export default {
     },
     editInvitado() {
       this.sending = true;
-
+      this.form.descuento = this.descuento;
+      
+      console.log(this.form)
       axios
         .post("http://" + hostname() + ":3000/editarDatosInvitado", this.form)
         .then(() => {

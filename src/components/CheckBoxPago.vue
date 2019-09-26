@@ -1,7 +1,17 @@
 <template>
   <div>
-            <md-checkbox v-model="booleanCheck" @change="cambio()" class="md-primary" >{{estado}}</md-checkbox>
-   
+
+
+<!--             <md-checkbox  v-if="descuentoInvitado == '100' " :v-model="true"  class="md-primary"  style="color: green;  font-weight: bold;"  >Free</md-checkbox>
+ -->            
+<!--             <md-checkbox v-if="descuentoInvitado != '100' && descuentoInvitado != ''" v-model="booleanCheck" @change="cambio()" class="md-primary" >{{descuentoInvitado + "%"}}</md-checkbox>
+ -->
+             <md-checkbox v-model="booleanCheck" @change="cambio()" class="md-primary" >
+               <label v-if="descuentoInvitado == '100'" style="color: green;  font-weight: bold;"> Gratis</label>
+               <label v-if="descuentoInvitado != '100'"> {{  descuentoInvitado + "%"}} </label>
+
+             </md-checkbox>
+
     <!-- <div>
  <md-field>
       <md-select v-model="estado" name="country" >
@@ -23,7 +33,7 @@ import { hostname } from "os";
 
 export default {
   name: "check-box-pago",
-  props: ["cedulaInvitado", "pagoInvitado"],
+  props: ["cedulaInvitado", "pagoInvitado", "descuentoInvitado"],
   data: function() {
     return {
       booleanCheck: this.pagoInvitado == "Si" ? true : false,

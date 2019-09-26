@@ -64,9 +64,11 @@
           <switch-invitados :itemInvitado="item" @setParentComponentInvitados="setInvitadosData"></switch-invitados>
         </md-table-cell>
 
-        <md-table-cell>
-          <check-box-pago :cedulaInvitado="item.cedula" :pagoInvitado="item.pago"></check-box-pago>
+        <md-table-cell md-label="Pago" md-sort-by="Pago">
+          <check-box-pago :cedulaInvitado="item.cedula" :pagoInvitado="item.pago" :descuentoInvitado="item.descuento"></check-box-pago>
         </md-table-cell>
+
+     
       </md-table-row>
     </md-table>
     <md-dialog :md-active.sync="showDialog">
