@@ -26,9 +26,9 @@
           <div class="md-layout-item">
             <md-field md-clearable class="md-toolbar-section-end">
               <md-input
-                placeholder="Busqueda por cedula "
-                v-model="searchID"
-                @input="searchOnTableID"
+                placeholder="Busqueda por correo "
+                v-model="searchCorreo"
+                @input="searchOnTableCorreo"
               />
             </md-field>
           </div>
@@ -46,8 +46,8 @@
         slot-scope="{ item }"
         md-selectable="single"
       >
-        <md-table-cell md-label="Cedula" md-sort-by="cedula" md-numeric>{{ item.cedula }}</md-table-cell>
-
+<!--         <md-table-cell md-label="Cedula" md-sort-by="cedula" md-numeric>{{ item.cedula }}</md-table-cell>
+ -->
         <md-table-cell md-label="Apellido" md-sort-by="apellido">{{ item.apellido }}</md-table-cell>
         <md-table-cell md-label="Nombre" md-sort-by="nombre">{{ item.nombre }}</md-table-cell>
         <md-table-cell
@@ -97,9 +97,9 @@ const searchByName = (items, term) => {
   return items;
 };
 
-const searchByID = (items, term) => {
+const searchByCorreo = (items, term) => {
   if (term) {
-    return items.filter(item => toLower(item.cedula).includes(toLower(term)));
+    return items.filter(item => toLower(item.correo).includes(toLower(term)));
   }
 
   return items;
@@ -113,7 +113,7 @@ export default {
   name: "home",
   data: () => ({
     apellido: null,
-    searchID: null,
+    searchCorreo: null,
     searched: [],
     invitados: [],
     boolean: false,
@@ -131,8 +131,8 @@ export default {
     searchOnTable() {
       this.searched = searchByName(this.invitados, this.apellido);
     },
-    searchOnTableID() {
-      this.searched = searchByID(this.invitados, this.searchID);
+    searchOnTableCorreo() {
+      this.searched = searchByCorreo(this.invitados, this.searchCorreo);
     },
     switchInvitado() {
       return "true";

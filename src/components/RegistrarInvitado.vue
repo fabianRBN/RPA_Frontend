@@ -180,11 +180,21 @@
       <md-progress-bar md-mode="indeterminate" v-if="sending" />
 
       <md-card-actions>
-        <md-button type="submit" class="md-primary" :disabled="sending">{{textButton}} Invitado</md-button>
+        <md-button type="submit" class="md-raised md-primary" :disabled="sending">{{textButton}} Invitado</md-button>
+        <md-button type="button" class="md-raised md-accent" v-if="textButton !='Crear'" @click="activeDialogoEliminar = true">Eliminar Invitado</md-button>
       </md-card-actions>
     </md-card>
 
     <md-snackbar :md-active.sync="userSaved">El invitado {{ lastUser }} fue registrado exitosamente!</md-snackbar>
+
+     <md-dialog-confirm
+      :md-active.sync="activeDialogoEliminar"
+      md-title="Confirmación"
+      md-content="Desea eliminar al invitado"
+      md-confirm-text="Aceptar"
+      md-cancel-text="Cancelar"
+      @md-cancel="onCancel"
+      @md-confirm="onConfirm" />
   </form>
 </template>
 
@@ -206,7 +216,7 @@ export default {
   data: function() {
     return {
       form: {
-        cedula: '',
+
         nombre: null,
         apellido: null,
         movil: null,
@@ -216,6 +226,7 @@ export default {
         personal: null,
         descuento: null
       },
+      activeDialogoEliminar: false,
       userSaved: false,
       sending: false,
       lastUser: null,
@@ -228,9 +239,7 @@ export default {
   validations: {
     form: {
       cedula: {
-        required,
-        maxLength: maxLength(10),
-        minLength: minLength(10)
+        
       },
       nombre: {
         required,
@@ -294,8 +303,7 @@ export default {
         });
     },
     saveUser() {
-      this.form.personal = this.seleccionado;
-      this.form.descuento = this.descuento;
+     
       this.sending = true;
       axios
         .post("http://" + hostname() + ":3000/createInvitado", this.form)
@@ -315,7 +323,12 @@ export default {
     },
     editInvitado() {
       this.sending = true;
-      this.form.descuento = this.descuento;
+    /*    if(this.form.descuento != this.descuento){
+         this.form.descuento = this.descuento 
+      } 
+ */
+      console.log(this.form.descuento)
+      
       
       console.log(this.form)
       axios
@@ -323,6 +336,7 @@ export default {
         .then(() => {
           window.setTimeout(() => {
             this.lastUser = `${this.form.nombre} ${this.form.lastName}`;
+         
             this.userSaved = true;
             this.sending = false;
           }, 500);
@@ -333,7 +347,9 @@ export default {
     },
     validateUser() {
       this.$v.$touch();
-      this.form.personal = this.seleccionado;
+
+      (this.seleccionado != '')?this.form.personal = this.seleccionado: this.form.personal =this.form.personal;
+      (this.descuento != '')?this.form.descuento = this.descuento:this.form.descuento = this.form.descuento ;
       if (!this.$v.$invalid) {
         if (this.accion) {
           this.editInvitado();
@@ -341,6 +357,23 @@ export default {
           this.saveUser();
         }
       }
+    }
+    ,
+    onCancel(){
+
+    },
+    onConfirm(){
+         axios
+        .post("http://" + hostname() + ":3000/eliminarInvitado", this.form)
+        .then((data) => {
+          if(data.data.status){
+            location.reload()
+          }
+          
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   },
   created() {

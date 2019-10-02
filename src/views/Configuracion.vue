@@ -8,13 +8,15 @@
       <md-card-content>
         <div class="upload-btn-wrapper">
           <md-field>
-            <label>Documento</label>
+            <label>
+              
+                          <input type="file" id="file" ref="file" v-on:change="handleFileUpload()" />
+
+            </label>
             <md-input v-model="file.name"></md-input>
           </md-field>
 
-          <label>
-            <input type="file" id="file" ref="file" v-on:change="handleFileUpload()" />
-          </label>
+       
         </div>
       </md-card-content>
 
@@ -30,17 +32,35 @@
 
       <md-card-content>
         <md-card-media>
-          <img class="imgfile" src="../assets/excel.png" alt="People" />
-          <label for>Nombre del Archivo</label>
+          <img class="imgfile" v-on:click="descargarExcel()" src="../assets/excel.png" alt="People" />
+          <label for>{{nombreExcel}}</label>
         </md-card-media>
       </md-card-content>
 
       <md-card-actions>
-        <md-button v-on:click="submitFile()" class="md-raised md-primary">Procesar Excel</md-button>
-        <md-button v-on:click="submitFile()" class="md-raised md-accent">Eliminar Base de datos</md-button>
+        <md-button v-on:click="procesarFile()" class="md-raised md-primary">Procesar Excel</md-button>
+        <md-button v-on:click="activeDialog=true " class="md-raised md-accent">Eliminar Base de datos</md-button>
       </md-card-actions>
     </md-card>
+    <md-dialog-confirm
+      :md-active.sync="activeDialog"
+      md-title="Confimación"
+      md-content="Desea eliminar la base de datos."
+      md-confirm-text="Aceptar"
+      md-cancel-text="Cancelar"
+      @md-cancel="onCancel"
+      @md-confirm="onConfirm" />
+
+    <md-dialog-alert
+      :md-active.sync="activeDialogCargarData"
+      md-title="Datos"
+      md-content="Base de datos cargada"
+      md-confirm-text="Aceptar"
+   
+      />
   </div>
+
+  
 </template>
 
 <script>
@@ -50,11 +70,14 @@ export default {
   /*
       Defines the data used by the component
     */
-  data() {
-    return {
-      file: ""
-    };
-  },
+  data: () => ({
+    
+      file: "",
+      nombreExcel:"",
+      activeDialog:false,
+      activeDialogCargarData:false
+    }),
+  
 
   methods: {
     /*
@@ -87,6 +110,58 @@ export default {
           console.log("FAILURE!!");
         });
     },
+    procesarFile(){
+
+      this.activeDialogCargarData=true 
+
+      axios
+        .get("http://"+hostname()+":3000/procesarExcel")
+        .then(function() {
+          console.log("SUCCESS!!");
+        })
+        .catch(function() {
+          console.log("FAILURE!!");
+        });
+    },
+    comprobarFile(){
+
+      axios
+        .get("http://"+hostname()+":3000/validadExcel")
+        .then((data)=> {
+          this.nombreExcel= data.data.message;
+          console.log(this.nombreExcel)
+        })
+        .catch((data) => {
+          this.nombreExcel= data.data.message;
+           console.log(this.nombreExcel)
+        });
+    },
+    eliminarData(){
+
+      axios
+        .get("http://"+hostname()+":3000/deleteData")
+        .then((data)=> {
+          
+          alert(data.data.message)
+        })
+        .catch((data) => {
+          
+           alert(data.data.messagel)
+        });
+    },
+      descargarExcel(){
+
+      axios
+        .get("http://"+hostname()+":3000/descargarExcel")
+        .then(()=> {
+          
+        })
+        .catch(() => {
+          
+           alert("error")
+        });
+    },
+
 
     /*
         Handles a change on the file upload
@@ -95,7 +170,19 @@ export default {
       this.file = this.$refs.file.files[0];
       console.log(this.file);
     }
-  }
+
+    ,
+    onCancel(){
+
+    }
+    ,
+    onConfirm(){
+      this.eliminarData();
+    }
+  },
+   created() {
+    this.comprobarFile();
+  },
 };
 </script>
 <style >

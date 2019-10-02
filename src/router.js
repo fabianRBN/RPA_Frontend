@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import About from './views/About';
 import Configuracion from './views/Configuracion';
+import Whatsapp from './views/Whatsapp';
+import Sorteo from './views/Sorteo';
 
 Vue.use(Router)
 
@@ -18,6 +20,16 @@ export default new Router({
       path: '/configuracion',
       name: 'configuracion',
       component: Configuracion
+    },
+    {
+      path: '/whatsapp',
+      name: 'whatsapp',
+      component: Whatsapp
+    },
+    {
+      path: '/sorteo',
+      name: 'sorteo',
+      component: Sorteo
     },
     {
       path: '/about',

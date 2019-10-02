@@ -7,12 +7,16 @@
 
     <md-list-item @click="callingParentComponentMethod" to="/about">
       <md-icon>group</md-icon>
-      <span class="md-list-item-text">Invitados</span>
+      <span class="md-list-item-text">Registrar</span>
     </md-list-item>
 
-    <md-list-item @click="callingParentComponentMethod" to="/">
+    <md-list-item @click="callingParentComponentMethod" to="/whatsapp">
       <md-icon>person</md-icon>
-      <span class="md-list-item-text">Invitado</span>
+      <span class="md-list-item-text">Whatsapp</span>
+    </md-list-item>
+    <md-list-item @click="callingParentComponentMethod" to="/sorteo">
+      <md-icon>person</md-icon>
+      <span class="md-list-item-text">Sorteo</span>
     </md-list-item>
 
     <md-list-item @click="callingParentComponentMethod" to="/configuracion">
