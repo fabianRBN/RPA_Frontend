@@ -6,16 +6,16 @@
       <md-button class="md-icon-button" @click="showNavigation = true">
         <md-icon>menu</md-icon>
       </md-button>
-      <span class="md-title">InnovaSys</span>
+      <span class="md-title">VirtualIT</span>
 
       <div class="md-toolbar-section-end">
-        <md-button @click="showSidepanel = true">Invitados</md-button>
+        <md-button @click="showSidepanel = true">VirtualIT</md-button>
       </div>
     </md-toolbar>
 
     <md-drawer :md-active.sync="showNavigation" md-swipeable>
       <md-toolbar class="md-transparent" md-elevation="0">
-        <span class="md-title">Innovasys RPA</span>
+        <span class="md-title">VirtualIT HCI</span>
       </md-toolbar>
 
               <menu-left  @setParentComponentDetails="setDetailsForComponent" ></menu-left>

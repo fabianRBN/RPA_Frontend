@@ -149,6 +149,7 @@
                       <md-option value="0">0%</md-option>
                       <md-option value="20">20%</md-option>
                       <md-option value="40">40%</md-option>
+                      <md-option value="50">50%</md-option>
                       <md-option value="100">100%</md-option>
                     </md-select>
                   </md-field>

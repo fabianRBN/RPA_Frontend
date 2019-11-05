@@ -6,18 +6,20 @@
       </md-card-header>
 
       <md-card-content>
-        <div class="upload-btn-wrapper">
+         <input type="file" id="file" ref="file" v-on:change="handleFileUpload()" />
+
+       <!--  <div class="upload-btn-wrapper">
           <md-field>
             <label>
               
-                          <input type="file" id="file" ref="file" v-on:change="handleFileUpload()" />
+              <input type="file" id="file" ref="file" v-on:change="handleFileUpload()" />
 
             </label>
             <md-input v-model="file.name"></md-input>
-          </md-field>
+           </md-field>
 
        
-        </div>
+        </div> -->
       </md-card-content>
 
       <md-card-actions>

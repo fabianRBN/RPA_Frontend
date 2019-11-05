@@ -2,8 +2,8 @@
   <div class="container">
     <div class="md-layout-item">
       <md-field>
-        <label for="movies">Invitados</label>
-        <md-select v-model="selectedInvitados" name="movies" id="movies" multiple>
+        <label for="movies">VirtualIT</label>
+        <md-select v-model="selectedInvitados" name="movies" id="movies" @click="btnEnviarActivar()" multiple>
           <!-- <md-option value="fight-club">Fight Club</md-option>
           <md-option value="godfather">Godfather</md-option>
           <md-option value="godfather-ii">Godfather II</md-option>
@@ -15,7 +15,7 @@
                   v-for="item in invitados"
                   :key="item.cedula"
                   :value="item.movil"
-                >{{item.nombre + '' + item.apellido}}</md-option>
+                >{{item.nombre + ' ' + item.apellido}}</md-option>
         </md-select>
       </md-field>
     </div>
@@ -26,13 +26,37 @@
       <span class="md-helper-text">Contenido del Mensaje</span>
       <span class="md-error">There is an error</span>
     </md-field>
-    <md-button class="md-raised md-accent" @click="enviar(mensaje)">Accent</md-button>
+    <md-button class="md-raised md-accent" id="btnEnviar" @click="enviar(mensaje)">Enviar</md-button>
+
+    <md-button class="md-raised md-accent" @click="marcar()">Marcar Todos</md-button>
+<br><br><br>
+ <div id='divEnvio' style="display:none">
+   <label for="">{{estadoEnvio}}</label>
+    <md-progress-bar md-mode="indeterminate"></md-progress-bar>
   </div>
+
+  <div>
+    <md-table v-model="reporteEnviados" md-sort="name" md-sort-order="asc" md-card md-fixed-header>
+      <md-table-toolbar>
+        <h1 class="md-title">Estado de envios</h1>
+      </md-table-toolbar>
+
+      <md-table-row slot="md-table-row" slot-scope="{ item }">
+        <md-table-cell md-label="numero" md-sort-by="numero" md-numeric>{{ item.numero }}</md-table-cell>
+        <md-table-cell md-label="estado" md-sort-by="estado">{{ item.estado }}</md-table-cell>
+    
+ 
+      </md-table-row>
+    </md-table>
+  </div>
+  </div>
+  
 </template>
 
 <script>
 import axios from "axios";
 import { hostname } from "os";
+import EnvioMensajesW from "./../components/EnvioMensajesW.vue";
 export default {
   /*
       Defines the data used by the component
@@ -44,16 +68,32 @@ export default {
     activeDialogCargarData: false,
     mensaje: "",
     selectedInvitados: [],
-    invitados: []
+    invitados: [],
+    estadoEnvio:'Enviando Mensajes......',
+    reporteEnviados:[]
   }),
 
   methods: {
+    btnEnviarActivar(){
+        document.getElementById('btnEnviar').style.visibility  = "visible";
+
+    },
     enviar(data) {
 
         let array = this.selectedInvitados;
+        document.getElementById('btnEnviar').style.visibility  = "hidden";
+        
+     
+
         array.forEach((element )=>{
           
-     
+             document.getElementById('divEnvio').style.display  = "block";
+            /* setTimeout(function(){
+              // doing async stuff
+              console.log('data'+data)
+              console.log('Enviado a '+ "593"+element.substring(1,10));
+            }, 20000); */
+             
           axios
                   .post(
                     "https://eu51.chat-api.com/instance68162/sendMessage?token=5vqbfzqau02govzv",
@@ -61,17 +101,33 @@ export default {
                   )
                   .then((data)=> {
                     console.log(data)
+
+                    document.getElementById('divEnvio').style.display  = "none";
+
+                    this.reporteEnviados.push({
+                        numero: element.substring(1,10),
+                        estado: "Envio correcto",
+                    
+                      })
             
                   })
                   .catch(function() {
-
-                  }); 
+                  this.reporteEnviados.push({
+                        numero: element.substring(1,10),
+                        estado: "Error de Envio",
+                    
+                      })
+                  });  
          
-        
     });
+        
 
     },
     messageClass() {},
+    marcar(){
+      
+    },
+
     getInvitados() {
       axios
         .get("http://" + hostname() + ":3000/getInvitadosDB")
@@ -84,6 +140,10 @@ export default {
   },
   created() {
       this.getInvitados();
+
+  },
+  component:{
+    EnvioMensajesW
   }
 };
 </script>
