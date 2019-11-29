@@ -72,8 +72,10 @@
       </md-table-row>
     </md-table>
     <md-dialog :md-active.sync="showDialog">
+        
       <registrar-invitado
         @setDataInvitados="getInvitados"
+        @CerrarModal="CerrarModal"
         :itemInvitado="this.itemSelect"
         :accion="this.accion"
     
@@ -174,6 +176,9 @@ export default {
         this.invitados = response.data.data.response;
         this.searched = this.invitados;
       });
+    },
+    CerrarModal(){
+      this.showDialog=false;
     }
   },
   created() {

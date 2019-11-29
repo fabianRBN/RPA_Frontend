@@ -18,7 +18,7 @@
 import axios from 'axios'
 import { hostname } from 'os';
 import RegistrarInvitado from "./../components/RegistrarInvitado.vue";
-import RegistrarPersonal from "./../components/ResitrarPersonal.vue";
+import RegistrarPersonal from "./../components/RegistrarPersonal.vue";
 // @ is an alias to /src
 const getInvitados  = (url)=>{
     axios.get(url).then((response) => {

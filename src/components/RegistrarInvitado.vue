@@ -7,20 +7,7 @@
 
       <md-card-content>
         <div class="md-layout md-gutter">
-         <!--  <div class="md-layout-item md-small-size-100">
-            <md-field :class="getValidationClass('cedula')">
-              <label for="first-name">Cedula</label>
-              <md-input
-                name="first-name"
-                id="first-name"
-                autocomplete="given-name"
-                v-model="form.cedula"
-                :disabled="sending"
-              />
-              <span class="md-error" v-if="!$v.form.cedula.required">El cedula requerida</span>
-              <span class="md-error" v-else-if="!$v.form.cedula.minlength">Cedula no valida</span>
-            </md-field>
-          </div> -->
+       
 
           <div class="md-layout-item md-small-size-100">
             <md-field :class="getValidationClass('correo')">
@@ -181,8 +168,11 @@
       <md-progress-bar md-mode="indeterminate" v-if="sending" />
 
       <md-card-actions>
+
         <md-button type="submit" class="md-raised md-primary" :disabled="sending">{{textButton}} Invitado</md-button>
         <md-button type="button" class="md-raised md-accent" v-if="textButton !='Crear'" @click="activeDialogoEliminar = true">Eliminar Invitado</md-button>
+        <md-button type="button" class="md-raised md-default" v-if="textButton !='Crear'"  @click="cerrarModal">Cerrar</md-button>
+
       </md-card-actions>
     </md-card>
 
@@ -213,7 +203,7 @@ import axios from "axios";
 export default {
   name: "registrar-invitado",
   mixins: [validationMixin],
-  props: ["itemInvitado", "accion"],
+  props: ["itemInvitado", "accion","showDialog"],
   data: function() {
     return {
       form: {
@@ -234,7 +224,8 @@ export default {
       textButton: this.accion ? "Editar" : "Crear",
       personal: [],
       seleccionado: "",
-      descuento:''
+      descuento:'',
+      show: this.showDialog
     };
   },
   validations: {
@@ -375,6 +366,10 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+
+    cerrarModal(){
+       this.$emit("CerrarModal");
     }
   },
   created() {
@@ -574,4 +569,9 @@ input[type=range]::-ms-fill-lower {
 input[type=range]::-ms-fill-upper {
   background-color: black;
 } 
+.md-default{
+  background: #848484;
+    color: white;
+}
+
 </style>
